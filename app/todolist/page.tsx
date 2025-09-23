@@ -2,13 +2,17 @@ import React from "react";
 import TodoForm from "../_components/TodoForm";
 import Todo from "../models/Todo";
 import { connectDB } from "../_lib/mongodb";
-import { revalidatePath } from "next/cache";
+import TodoItem from "../_components/TodoItem"
 
 async function getAllTodos() {
   await connectDB();
-  const todos = await Todo.find();
-  console.log(todos);
-  return todos;
+  const todos = await Todo.find({});
+  
+  return todos.map(todo=>({
+    id: todo._id.toString(),
+    title:todo.title,
+    createdAt:todo.createdAt.toString()
+  }));
 }
 
 async function Page() {
@@ -20,9 +24,7 @@ async function Page() {
 
       <ul>
         {todos.map((T) => (
-          <li key={T.id}>
-            {T.title} - Created on: {T.createdAt.toLocaleDateString()}{" "}
-          </li>
+         <TodoItem key={T.id} T={T} />
         ))}
       </ul>
     </div>
