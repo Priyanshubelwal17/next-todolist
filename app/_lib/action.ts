@@ -49,10 +49,17 @@ export async function deleteTodo(deleteId: any) {
 }
 
 export async function toggleTodo(toggleId: string, completed: boolean) {
-  const todo = await Todo.findByIdAndUpdate(toggleId, {
-    completed: completed,
-  });
+  const todo = await Todo.findByIdAndUpdate(
+    toggleId,
+    {
+      completed: !completed,
+    },
+    { new: true }
+  );
+  console.log(todo.completed);
   if (!todo) throw new Error("Todo not found");
+
+  revalidatePath("/todolist");
 
   return JSON.parse(JSON.stringify(todo));
 }

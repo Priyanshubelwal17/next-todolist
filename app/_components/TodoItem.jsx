@@ -5,7 +5,7 @@ import { deleteTodo, toggleTodo, updateTodo } from "../_lib/action";
 import EditButton from "./EditButton";
 
 function TodoItem({ T }) {
-  console.log(T.completed);
+  console.log(T);
   const [initialTitle, setTitle] = useState(T.title);
   const [isEdit, setEdit] = useState(false);
 
@@ -20,7 +20,7 @@ function TodoItem({ T }) {
         <input
           type="checkbox"
           checked={T.completed}
-          onChange={() => toggleTodo(T.id, !T.completed)}
+          onChange={() => toggleTodo(T.id, T.completed)}
         />
         {isEdit ? (
           <input

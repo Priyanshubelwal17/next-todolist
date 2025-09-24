@@ -11,6 +11,7 @@ async function getAllTodos() {
   return todos.map((todo) => ({
     id: todo._id.toString(),
     title: todo.title,
+    completed: todo.completed,
     createdAt: todo.createdAt.toString(),
   }));
 }
