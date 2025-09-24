@@ -1,14 +1,12 @@
-import mongoose, {Schema,models} from "mongoose"
-
-
+import mongoose, { Schema, models } from "mongoose";
 
 const todoSchema = new Schema({
-    title:{type:String,required:true},
-    completed:{type:Boolean,required:true},
-    createdAt:{type:Date,default:Date.now},
-    updatedAt:{type:Date,default:Date.now}
-}) ;
+  title: { type: String, required: true },
+  completed: { type: Boolean, required: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
 
-const Todo = models.Todo || mongoose.model("Todo",todoSchema) ;
+const Todo = models.Todo || mongoose.model("Todo", todoSchema);
 
-export default Todo
+export default Todo;

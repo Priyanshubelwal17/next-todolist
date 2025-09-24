@@ -1,44 +1,58 @@
-"use server"
+"use server";
 
 import { connectDB } from "./mongodb";
 import Todo from "../models/Todo";
 import { error } from "console";
+import { revalidatePath } from "next/cache";
 // import { revalidatePath } from "next/cache";
 
-export async function addTodo(formdata:FormData) {
-    await connectDB()
-    console.log(formdata);
-    const title = formdata.get("title") as string  ;
-    console.log(formdata);
-    if(!title || title.trim()===""){
-        throw new Error("Title is required")
-    }
-    
+export async function addTodo(formdata: FormData) {
+  await connectDB();
+  console.log(formdata);
+  const title = formdata.get("title") as string;
+  console.log(formdata);
+  if (!title || title.trim() === "") {
+    throw new Error("Title is required");
+  }
 
-    const todo = new Todo({title}) ;
-    await todo.save()
+  const todo = new Todo({
+    title,
+    completed: false,
+  });
+  await todo.save();
 
-    return JSON.parse(JSON.stringify(todo))
-
-    // revalidatePath('/todolist')
+  revalidatePath("/todolist");
+  return JSON.parse(JSON.stringify(todo));
 }
 
-export async function updateTodo(updateId:string,newTitle:string) {
+export async function updateTodo(updateId: string, newTitle: string) {
   console.log(updateId);
-  const updateTodo = await Todo.findByIdAndUpdate(updateId,{title:newTitle}) ;
+  const updateTodo = await Todo.findByIdAndUpdate(updateId, {
+    title: newTitle,
+  });
   console.log(updateTodo);
-  if(!updateTodo) {
-    throw new Error("Todo is not updated")
-console.log(error);
-
+  if (!updateTodo) {
+    throw new Error("Todo is not updated");
+    console.log(error);
   }
-  return JSON.parse(JSON.stringify(updateTodo))
+  revalidatePath("/todolist");
+  return JSON.parse(JSON.stringify(updateTodo));
 }
 
-export async function deleteTodo(deleteId:any) {
-  const deleteTodo = await Todo.findByIdAndDelete(deleteId) ;
-  if(!deleteTodo) {
-    throw new Error("Todo is not deleting")
+export async function deleteTodo(deleteId: any) {
+  const deleteTodo = await Todo.findByIdAndDelete(deleteId);
+  if (!deleteTodo) {
+    throw new Error("Todo is not deleting");
   }
-  return JSON.parse(JSON.stringify(deleteTodo))
+  revalidatePath("/todolist/");
+  return JSON.parse(JSON.stringify(deleteTodo));
+}
+
+export async function toggleTodo(toggleId: string, completed: boolean) {
+  const todo = await Todo.findByIdAndUpdate(toggleId, {
+    completed: completed,
+  });
+  if (!todo) throw new Error("Todo not found");
+
+  return JSON.parse(JSON.stringify(todo));
 }
