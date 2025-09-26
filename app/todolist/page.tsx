@@ -34,8 +34,8 @@ async function Page() {
 
   return (
     <main className="bg-gradient-to-tr from-blue-50 via-gray-100 to-gray-200 min-h-screen py-10 flex justify-center">
-      <div className="w0full max-w-2xl bg-white rounder-2xl shadow-xl p-8 space-y-8">
-        <h2 className="text-wxl font-bold text-gray-900 "> Your Todo List</h2>
+      <div className="w-full max-w-2xl bg-white rounder-2xl shadow-xl p-8 space-y-6">
+        <h2 className="text-2xl font-bold text-gray-900 "> Your Todo List</h2>
 
         <TodoForm />
 
