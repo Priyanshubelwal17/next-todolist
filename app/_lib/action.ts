@@ -4,9 +4,16 @@ import { connectDB } from "./mongodb";
 import Todo from "../models/Todo";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 // import { revalidatePath } from "next/cache";
 
 export async function addTodo(formdata: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: "Not authenticated" };
+  }
+  const userId = session.user.id;
+
   await connectDB();
   console.log(formdata);
   const title = formdata.get("title") as string;
@@ -18,6 +25,7 @@ export async function addTodo(formdata: FormData) {
   const todo = new Todo({
     title,
     completed: false,
+    userId: userId,
   });
   await todo.save();
 

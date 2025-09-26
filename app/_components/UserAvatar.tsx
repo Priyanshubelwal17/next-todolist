@@ -5,8 +5,13 @@ export default async function UserAvatar() {
   if (!session?.user) return null;
 
   return (
-    <div>
-      <img src={session.user.image} alt="User Avatar" />
+    <div className="">
+      <img
+        className="rounded-full h-12"
+        src={session?.user?.image}
+        alt="User Avatar"
+        referrerPolicy="no-referrer"
+      />
     </div>
   );
 }

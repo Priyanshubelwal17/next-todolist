@@ -8,7 +8,7 @@ export default function SignIn() {
         await signIn("google", { redirectTo: "/todolist" });
       }}
     >
-      <button type="submit">Signin with Google</button>
+      <button type="submit">Signin</button>
     </form>
   );
 }
